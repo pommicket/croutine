@@ -71,7 +71,7 @@ static void context_function(void *data, void (*f)(void *, size_t), size_t arg) 
 }
 
 void *generator_(void (*f)(void *, size_t), size_t item_size, size_t arg) {
-	size_t bytes_to_allocate = sizeof (short)/*TODO*/ + sizeof(Generator);
+	size_t bytes_to_allocate = item_size + sizeof(Generator);
 	// round up to multiple of sizeof(max_align_t)
 	bytes_to_allocate = (bytes_to_allocate + sizeof(max_align_t) - 1)
 		/ sizeof(max_align_t) * sizeof(max_align_t);

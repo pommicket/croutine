@@ -51,11 +51,11 @@ static void gen_destroy(Generator *gen) {
 
 bool next_(void *pdata_v) {
 	void **pdata = pdata_v;
-	Generator *gen = generator_from_data(*pdata);
-	if (!gen) {
+	if (!*pdata) {
 		fprintf(stderr, "next() on an empty generator\n");
 		abort();
 	}
+	Generator *gen = generator_from_data(*pdata);
 	next_internal(gen);
 	if (gen->finished) {
 		gen_destroy(gen);
@@ -104,6 +104,7 @@ void *generator_(void (*f)(void *, size_t), size_t item_size, size_t arg) {
 
 void cancel_(void *pdata_v) {
 	void **pdata = pdata_v;
+	if (!*pdata) return;
 	gen_destroy(generator_from_data(*pdata));
 	*pdata = NULL;
 }
